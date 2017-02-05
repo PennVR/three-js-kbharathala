@@ -18,7 +18,7 @@
     var BACKGROUND_COLOR = 0xfa8290;
 
     init();
-    animate();
+    render();
 
     function init() {
 
@@ -58,8 +58,8 @@
       cube.rotation.y += SPEED;
     }
 
-    function animate() {
-      requestAnimationFrame(animate);
+    function render() {
+      requestAnimationFrame(render);
       rotateCube();
 
       renderer.render(scene, camera);
