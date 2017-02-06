@@ -5,7 +5,13 @@ var geometry, material, mesh;
 var raycaster;
 
 // Objects
-var floor, cubes = [];
+var floor, cubes = [], fireworks = [];
+
+// Fireworks variables
+var height = 0;
+var NUMBER_OF_FIREWORKS = 5;
+var fireworkGenerator;
+
 
 // Extras
 var blocker = document.getElementById( 'blocker' );
@@ -62,6 +68,7 @@ function init() {
 
   // Set up Camera
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+  camera.position.y = -5;
   
   // Set up Light
   var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
@@ -83,10 +90,17 @@ function init() {
   // Set up terrain
   var terrain = new Terrain();
   scene.add (terrain.floor);
+
+  // Set up fireworks
+  fireworkGenerator = new Firework();
+  fireworkGenerator.generateFireworks();
     
 }
 
 function animate() {
   requestAnimationFrame( animate );
+
+  fireworkGenerator.moveFirework();
+
   renderer.render( scene, camera );
 }
