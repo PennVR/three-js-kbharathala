@@ -1,71 +1,23 @@
-<!doctype html>
+<!-- This project uses codes from threejs examples (https://threejs.org/), WebVR (https://webvr.info/), and mrdoob / http://mrdoob.com.  -->
+
+<!DOCTYPE html>
 <html lang="en">
-<head></head>
-<body style="margin: 0;">
-
-  <script src="js/three.min.js"></script>
-
-  <script>
-
-    // Defaults
-    var scene, camera, renderer;
-
-    // Objects
-    var cube;
-
-    // Constants
-    var SPEED = 0.025;
-    var BACKGROUND_COLOR = 0xfa8290;
-
-    init();
-    render();
-
-    function init() {
-
-      var WIDTH = window.innerWidth, 
-          HEIGHT = window.innerHeight;
-
-      scene = new THREE.Scene();
-
-      // Set up Camera
-      camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
-      camera.position.z = 5;
-      scene.add(camera);
-
-      // Set up the Renderer
-      renderer = new THREE.WebGLRenderer({antialias:true});
-      renderer.setSize(WIDTH, HEIGHT);
-      renderer.setClearColorHex(BACKGROUND_COLOR, 1);
-      document.body.appendChild(renderer.domElement);
-
-      createCube();
-    }
-
-    // Creates a cube object
-    function createCube() {
-      var geometry = new THREE.CubeGeometry(1, 1, 1);
-      for ( var i = 0; i < geometry.faces.length; i ++ ) {
-        geometry.faces[i].color.setHex( Math.random() * 0xffffff );
-      }
-      var material = new THREE.MeshBasicMaterial({color:0xb082fa, vertexColors: THREE.FaceColors });
-      cube = new THREE.Mesh(geometry, material);
-      scene.add(cube);     
-    }
-
-    // Rotates the cube object
-    function rotateCube() {
-      cube.rotation.x += SPEED;
-      cube.rotation.y += SPEED;
-    }
-
-    function render() {
-      requestAnimationFrame(render);
-      rotateCube();
-
-      renderer.render(scene, camera);
-    }
-
-  </script>
-
-</body>
+  <head>
+    <title>Krishna Bharathala -- VR Project</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  </head>
+  <body>
+    <script src="js/ThreeJS/three.min.js"></script>
+    <script src="js/controls/PointerLockControl.js"></script>
+    <script src="js/noise.js"></script>
+    <script src="js/terrain.js"></script>
+    <div id="blocker">
+      <div id="instructions">
+        <span style="font-size:40px">Click to play</span>
+        <br/> Use the mouse to explore!
+      </div>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
 </html>
