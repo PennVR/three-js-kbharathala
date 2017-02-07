@@ -76,6 +76,25 @@ function init() {
   document.body.appendChild( renderer.domElement );
   selecting = false;
 
+  // Set up Effects
+  let effect = new THREE.VREffect(renderer);
+  
+  if ( WEBVR.isAvailable() === false ) {
+    document.body.appendChild( WEBVR.getMessage() );
+  }
+
+  if (navigator.getVRDisplays) {
+    navigator.getVRDisplays()
+        .then(function(displays) {
+            effect.setVRDisplay( displays[ 0 ] );
+            controls.setVRDisplay( displays[ 0 ] );
+        })
+        .catch(function() {
+            // no displays
+        });
+    document.body.appendChild(WEBVR.getButton(effect));
+  }
+
   // Set up Terrain
   var terrain = new Terrain(scene);
 
