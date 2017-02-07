@@ -1,53 +1,53 @@
 // Defaults
-var camera, scene, renderer, controls;
+var camera, scene, renderer, controls, effect;
 
 // Fireworks variables
 var fireworkGenerator;
 
-// Extras
-var blocker = document.getElementById( 'blocker' );
-var instructions = document.getElementById( 'instructions' );
+// // Extras
+// var blocker = document.getElementById( 'blocker' );
+// var instructions = document.getElementById( 'instructions' );
 
-// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
-var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
-if ( havePointerLock ) {
-  var element = document.body;
-  var pointerlockchange = function ( event ) {
-    if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
-      controls.enabled = true;
-      blocker.style.display = 'none';
-    } else {
-      controls.enabled = false;
-      blocker.style.display = '-webkit-box';
-      blocker.style.display = '-moz-box';
-      blocker.style.display = 'box';
-      instructions.style.display = '';
-    }
-  };
-  var pointerlockerror = function ( event ) {
-    instructions.style.display = '';
-  };
-  // Hook pointer lock state change events
-  document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-  document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-  document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
-  document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-  document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-  document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-  instructions.style.display = 'none';
+// // http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+// var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+// if ( havePointerLock ) {
+//   var element = document.body;
+//   var pointerlockchange = function ( event ) {
+//     if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+//       controls.enabled = true;
+//       blocker.style.display = 'none';
+//     } else {
+//       controls.enabled = false;
+//       blocker.style.display = '-webkit-box';
+//       blocker.style.display = '-moz-box';
+//       blocker.style.display = 'box';
+//       instructions.style.display = '';
+//     }
+//   };
+//   var pointerlockerror = function ( event ) {
+//     instructions.style.display = '';
+//   };
+//   // Hook pointer lock state change events
+//   document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+//   document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+//   document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+//   document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+//   document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+//   document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+//   instructions.style.display = 'none';
   
-  // Ask the browser to lock the pointer
-  element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-  element.requestPointerLock();
-  instructions.addEventListener( 'click', function ( event ) {
-    instructions.style.display = 'none';
-    // Ask the browser to lock the pointer
-    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-    element.requestPointerLock();
-  }, false );
-} else {
-  instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-}
+//   // Ask the browser to lock the pointer
+//   element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+//   element.requestPointerLock();
+//   instructions.addEventListener( 'click', function ( event ) {
+//     instructions.style.display = 'none';
+//     // Ask the browser to lock the pointer
+//     element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+//     element.requestPointerLock();
+//   }, false );
+// } else {
+//   instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+// }
 
 init();
 animate();
@@ -63,10 +63,6 @@ function init() {
   // Set up Camera
   camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 1, 2000 );
   camera.position.y = -5;
-  
-  // Set up Controls
-  controls = new THREE.PointerLockControls( camera );
-  scene.add( controls.getObject() );
 
   // Set up Renderer
   renderer = new THREE.WebGLRenderer();
@@ -76,9 +72,11 @@ function init() {
   document.body.appendChild( renderer.domElement );
   selecting = false;
 
-  // Set up Effects
-  let effect = new THREE.VREffect(renderer);
-  
+  // Set up Controls and Effect
+  controls = new THREE.VRControls( camera );
+  effect = new THREE.VREffect(renderer);
+
+
   if ( WEBVR.isAvailable() === false ) {
     document.body.appendChild( WEBVR.getMessage() );
   }
@@ -110,8 +108,13 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame( animate );
+  effect.requestAnimationFrame( animate );
+  render();
+}
+
+function render() {
   fireworkGenerator.launchFirework();
   fireworkGenerator.moveFireworks();
-  renderer.render( scene, camera );
+  controls.update();
+  effect.render( scene, camera );
 }
