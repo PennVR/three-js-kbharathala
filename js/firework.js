@@ -77,13 +77,13 @@ class Firework {
 
 	launchFirework() {
 
-		if (Math.random() > 0.99) {
+		if (Math.random() > 0.95) {
 			var c = new THREE.Color( Math.random() * 0xffffff )
-			var firework = this.makeNewFirework((Math.random() - 0.5) * 2000, 0, -1000, c);
+			var firework = this.makeNewFirework((Math.random() - 0.5) * 10000, 0, -1000, c);
 
 			this.fireworks.push(firework);
 			this.colors.push(c);
-			this.explodeHeights.push((Math.random() - 0.5) * 200 + 600);
+			this.explodeHeights.push((Math.random() - 0.5) * 500 + 1000);
 
 			this.scene.add( firework );
 		}
