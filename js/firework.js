@@ -53,7 +53,7 @@ class Firework {
 		this.scene.add( t8 );
 		this.twinklies.push(t8);
 
-		this.disappearTimes.push(120);
+		this.disappearTimes.push((Math.floor(((Math.random() - 0.5) * 10)) + 20) * 8);
 
 	}
 
@@ -77,13 +77,13 @@ class Firework {
 
 	launchFirework() {
 
-		if (Math.random() > 0.95) {
+		if (Math.random() > 0.97) {
 			var c = new THREE.Color( Math.random() * 0xffffff )
-			var firework = this.makeNewFirework((Math.random() - 0.5) * 10000, 0, -1000, c);
+			var firework = this.makeNewFirework((Math.random() - 0.5) * 2000, 0, -1000, c);
 
 			this.fireworks.push(firework);
 			this.colors.push(c);
-			this.explodeHeights.push((Math.random() - 0.5) * 500 + 1000);
+			this.explodeHeights.push((Math.random() - 0.5) * 400 + 800);
 
 			this.scene.add( firework );
 		}
