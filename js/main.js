@@ -1,17 +1,8 @@
-
 // Defaults
 var camera, scene, renderer, controls;
-var geometry, material, mesh;
-var raycaster;
-
-// Objects
-var floor, cubes = [], fireworks = [];
 
 // Fireworks variables
-var height = 0;
-var NUMBER_OF_FIREWORKS = 5;
 var fireworkGenerator;
-
 
 // Extras
 var blocker = document.getElementById( 'blocker' );
@@ -63,17 +54,15 @@ animate();
 
 function init() {
 
+  var WIDTH = window.innerWidth, 
+      HEIGHT = window.innerHeight;
+
   // Set up Scene
   scene = new THREE.Scene();
 
   // Set up Camera
-  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+  camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 1, 1000 );
   camera.position.y = -5;
-  
-  // Set up Light
-  var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
-  light.position.set( 0.5, 1, 0.75 );
-  scene.add( light );
   
   // Set up Controls
   controls = new THREE.PointerLockControls( camera );
@@ -81,15 +70,22 @@ function init() {
 
   // Set up Renderer
   renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor( 0xffffff );
+  renderer.setClearColor( 0x87cefa );
   renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize( WIDTH, HEIGHT );
   document.body.appendChild( renderer.domElement );
   selecting = false;
 
-  // Set up terrain
+  // Set up Terrain
   var terrain = new Terrain();
   scene.add (terrain.floor);
+
+  // Set up Sun 
+  var sunTexture = new THREE.TextureLoader().load('./textures/sun.png');
+  var sunMaterial = new THREE.SpriteMaterial( {map: sunTexture, color: 0xffffff } );
+  var sun = new THREE.Sprite(sunMaterial);
+  [sun.position.x, sun.position.y, sun.position.z] = [5, 8, -5];
+  scene.add (sun);
 
   // Set up fireworks
   fireworkGenerator = new Firework();

@@ -5,14 +5,15 @@ class Firework {
     	this.material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
     	this.fireworks = []
     	this.heightToStop = 0;
+    	this.NUMBER_OF_FIREWORKS = 5;
 	}
 
 	generateFireworks() {
 
 		var x_val = (Math.random() - 0.5) * 2000;
 		this.heightToStop = (Math.random() - 0.5) * 200 + 700;
-		for (var i = 0; i < NUMBER_OF_FIREWORKS; i++) {
-			mesh = new THREE.Mesh(this.geometry, this.material);
+		for (var i = 0; i < this.NUMBER_OF_FIREWORKS; i++) {
+			var mesh = new THREE.Mesh(this.geometry, this.material);
 			mesh.position.x = x_val;
 			mesh.position.y = 0;
 			mesh.position.z = -1000;
