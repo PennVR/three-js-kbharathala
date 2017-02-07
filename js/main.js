@@ -61,7 +61,7 @@ function init() {
   scene = new THREE.Scene();
 
   // Set up Camera
-  camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 1, 1000 );
+  camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 1, 2000 );
   camera.position.y = -5;
   
   // Set up Controls
