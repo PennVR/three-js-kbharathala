@@ -77,8 +77,7 @@ function init() {
   selecting = false;
 
   // Set up Terrain
-  var terrain = new Terrain();
-  scene.add (terrain.floor);
+  var terrain = new Terrain(scene);
 
   // Set up Sun 
   var sunTexture = new THREE.TextureLoader().load('./textures/sun.png');
@@ -88,15 +87,12 @@ function init() {
   scene.add (sun);
 
   // Set up fireworks
-  fireworkGenerator = new Firework();
-  fireworkGenerator.generateFireworks();
-    
+  fireworkGenerator = new Firework(scene);
 }
 
 function animate() {
   requestAnimationFrame( animate );
-
-  fireworkGenerator.moveFirework();
-
+  fireworkGenerator.launchFirework();
+  fireworkGenerator.moveFireworks();
   renderer.render( scene, camera );
 }

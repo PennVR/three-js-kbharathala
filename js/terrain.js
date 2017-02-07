@@ -1,6 +1,6 @@
 class Terrain {
 
-	constructor () {
+	constructor (scene) {
 		var texture = new THREE.TextureLoader().load( "textures/grass.jpg" );
 
 		var geometry = new THREE.PlaneGeometry( 3000, 3000, 200, 200 );
@@ -13,7 +13,8 @@ class Terrain {
 		});
 
 		var material = new THREE.MeshBasicMaterial( { map:texture } );
-		this.floor = new THREE.Mesh( geometry, material );
+		var floor = new THREE.Mesh( geometry, material );
+		scene.add(floor)
 	}
 
 }
