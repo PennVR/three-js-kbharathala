@@ -11,6 +11,7 @@ This project is hosted live at: pennvr.github.io/three-js-kbharathala
 ```
 ├── js
 │   ├── Controls
+|   |   ├── OrbitControls.js
 |   │   └── VRControls.js
 │   ├── Effects
 |   │   └── VREffect.js
@@ -21,11 +22,12 @@ This project is hosted live at: pennvr.github.io/three-js-kbharathala
 │   ├── firework.js
 │   ├── main.js
 │   ├── noise.js
+|   ├── river.js
 │   └── terrain.js
 ├── textures
-│   ├── fire
-|   ├── grass
-│   └── sun
+│   ├── grass
+|   ├── hills
+│   └── water
 ├── index.html
 └── README.md
 ```
