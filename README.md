@@ -38,7 +38,8 @@ You can also view this at pennvr.github.io/three-js-kbharathala
 
 * I started with a base project here: https://github.com/PennVR/PennVR-Head-Gazer to create the shell of my program, this includes getting the source files for many of the three js libraries.
 * I modified the floor from the project, by implementing a Perlin Noise function (js/noise.js) to deform the terrain on the y-axis. 
-* I added a sun sprite using the THREE.Sprite class.
+* I added a river by adding a new geometry on top of the floor and animating it according to the JavaScript Date Object.
+* I added a skybox with images of hills.
 * I added fireworks by create a sphere and animating it's movement into the sky. On explosion it creates more spheres around it which shoot outwards. Firework generation is random in all the following features: Launch time, Color, Explosion Time, Explosion Length
 
 ## Motion Sickness
