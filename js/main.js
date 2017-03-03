@@ -1,6 +1,9 @@
 // Defaults
 var camera, scene, renderer, controls, effect;
 
+// River Variable
+var river;
+
 // Fireworks variables
 var fireworkGenerator;
 
@@ -16,21 +19,24 @@ function init() {
   scene = new THREE.Scene();
 
   // Set up Camera
-  camera = new THREE.PerspectiveCamera( 75, WIDTH / HEIGHT, 1, 4000 );
+  camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 1, 15000);
   camera.position.y = -5;
 
   // Set up Renderer
   renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor( 0x87cefa );
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( WIDTH, HEIGHT );
   document.body.appendChild( renderer.domElement );
   selecting = false;
 
   // Set up Controls and Effect
-  controls = new THREE.VRControls( camera );
-  effect = new THREE.VREffect(renderer);
+  controls = new THREE.VRControls(camera);
 
+  // If you want control over the mouse uncomment these lines. 
+  // controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // controls.enableZoom = false;
+
+  effect = new THREE.VREffect(renderer);
 
   if ( WEBVR.isAvailable() === false ) {
     document.body.appendChild( WEBVR.getMessage() );
@@ -51,15 +57,31 @@ function init() {
   // Set up Terrain
   var terrain = new Terrain(scene);
 
-  // Set up Sun 
-  var sunTexture = new THREE.TextureLoader().load('./textures/sun.png');
-  var sunMaterial = new THREE.SpriteMaterial( {map: sunTexture, color: 0xffffff } );
-  var sun = new THREE.Sprite(sunMaterial);
-  [sun.position.x, sun.position.y, sun.position.z] = [5, 8, -5];
-  scene.add (sun);
+  // Set up River
+  river = new River(scene);
 
-  // Set up fireworks
+  // Set up Fireworks
   fireworkGenerator = new Firework(scene);
+
+  // Set up Sky
+  var imagePrefix = "textures/hills/hills-";
+  var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+  var imageSuffix = ".jpg";
+
+  var materials = [];
+
+  directions.forEach(function (p) {
+    var texture = new THREE.TextureLoader().load(imagePrefix + p + imageSuffix);
+    materials.push(new THREE.MeshBasicMaterial({ map: texture }));
+  });
+
+  var skyGeometry = new THREE.BoxGeometry(7500, 7500, 7500);
+  var skyMaterial = new THREE.MeshFaceMaterial(materials)
+  var mesh = new THREE.Mesh( skyGeometry, skyMaterial);
+
+  mesh.scale.set(-1, 1, 1);
+  scene.add(mesh);
+
 }
 
 function animate() {
@@ -70,6 +92,9 @@ function animate() {
 function render() {
   fireworkGenerator.launchFirework();
   fireworkGenerator.moveFireworks();
+
+  river.updateRiver();
+
   controls.update();
   effect.render( scene, camera );
 }
